@@ -9,9 +9,9 @@
   roles:
     - common
     - mariadb
-#    - redis
-#    - php-fpm
-#    - apache-no-varnish
+    - redis
+    - php-fpm
+    - apache-no-varnish
 #    - wordpress
 #    - apache
 #    - iptables

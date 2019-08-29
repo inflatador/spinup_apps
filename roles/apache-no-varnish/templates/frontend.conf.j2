@@ -5,8 +5,8 @@
 <VirtualHost *:80>
     ServerName {{ my_pub_ip4 }}
     ServerAlias {{ my_pub_ip6 }}
-    ErrorLog {{ apache_log_path }}/wordpress-frontend-error.log
-    CustomLog {{ apache_log_path }}/wordpress-frontend-access.log combined
+    ErrorLog {{ apache_log_path }}/{{ app }}-frontend-error.log
+    CustomLog {{ apache_log_path }}/{{ app }}-frontend-access.log combined
 
     SetEnvIf X-Forwarded-Proto https HTTPS=on
 
@@ -14,9 +14,9 @@
     SetHandler "proxy:unix:/run/php/php7.2-fpm.sock|fcgi://localhost"
     </FilesMatch>
 
-    DocumentRoot /var/www/vhosts/wordpress
+    DocumentRoot /var/www/vhosts/{{ app }}
 
-    <Directory /var/www/vhosts/wordpress>
+    <Directory /var/www/vhosts/{{ app }}>
         AllowOverride All
         Options -Indexes +FollowSymLinks
         Require all granted
@@ -29,12 +29,12 @@
 <VirtualHost *:443>
     ServerName {{ my_pub_ip4 }}
     ServerAlias {{ my_pub_ip6 }}
-    ErrorLog {{ apache_log_path }}/wordpress-frontend-error.log
-    CustomLog {{ apache_log_path }}/wordpress-frontend-access.log combined
+    ErrorLog {{ apache_log_path }}/{{ app }}-frontend-error.log
+    CustomLog {{ apache_log_path }}/{{ app }}-frontend-access.log combined
 
     SSLEngine On
-    SSLCertificateFile {{ ssl_cert_path }}/wordpress.crt
-    SSLCertificateKeyFile {{ ssl_key_path }}/wordpress.key
+    SSLCertificateFile {{ ssl_cert_path }}/{{ app }}.crt
+    SSLCertificateKeyFile {{ ssl_key_path }}/{{ app }}.key
 
     #comment
 
@@ -48,9 +48,9 @@
     SetHandler "proxy:unix:/run/php/php7.2-fpm.sock|fcgi://localhost"
     </FilesMatch>
 
-    DocumentRoot /var/www/vhosts/wordpress
+    DocumentRoot /var/www/vhosts/{{ app }}
 
-    <Directory /var/www/vhosts/wordpress>
+    <Directory /var/www/vhosts/{{ app }}>
         AllowOverride All
         Options -Indexes +FollowSymLinks
         Require all granted
