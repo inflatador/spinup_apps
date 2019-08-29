@@ -8,7 +8,7 @@
 
   roles:
     - common
-#    - mariadb
+    - mariadb
 #    - redis
 #    - php-fpm
 #    - apache-no-varnish
