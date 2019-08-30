@@ -5,3 +5,37 @@
     name: nginx
     state: present
 
+- name: Ensure nginx config is available
+  template:
+    src: "{{ item }}.conf.j2"
+    dest: "/etc/nginx/sites-available/{{ item }}.conf"
+    mode:  0644
+    owner: root
+    group: root
+    backup: true
+  register: sites_created
+  loop:
+    - frontend
+
+- name: Ensure nginx config is active
+  file: 
+    src: "{{ item.dest }}"
+    dest: "/etc/nginx/sites-enabled/{{ item.item }}.conf"
+    owner: root
+    group: root
+    state: link
+  with_items: "{{ sites_created.results }}"
+  notify: restart nginx
+  
+
+- name: Disable default site
+  file: 
+    dest: "/etc/nginx/sites-enabled/default"
+    state: absent
+  notify: restart nginx
+  
+- name: Ensure nginx is enabled and starts on boot
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes

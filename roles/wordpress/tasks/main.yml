@@ -9,7 +9,7 @@
      - php-mysql
      - php-redis
   notify: 
-    - reload apache
+    - restart nginx
 
 - name: Assign random password for wordpress admin user
   set_fact:

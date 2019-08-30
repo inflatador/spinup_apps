@@ -1,0 +1,20 @@
+server {
+        listen [::]:80 default_server;
+        listen 80 default_server;
+        server_name {{app}}.example.com www.{{app}}.example.com;
+        access_log /var/log/nginx/{{app}}.example.com.access.log;
+        error_log /var/log/nginx/{{app}}.example.com.error.log;
+        root /var/www/vhosts/{{app}};
+
+location / {
+        index index.html index.htm index.php;
+        try_files $uri =404;
+        }
+
+location ~ \.php$ {
+    include /etc/nginx/fastcgi_params;
+    fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME /var/www/vhosts/{{app}}$fastcgi_script_name;
+    }
+} 

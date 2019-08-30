@@ -1,0 +1,34 @@
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started
+    
+- name: activate nginx configuration
+  file: 
+    src: "{{ item.dest }}"
+    dest: "/etc/nginx/conf-enabled/{{ item.item }}.conf"
+    owner: root
+    group: root
+    state: link
+  loop: "{{ conf_created.results|flatten(levels=1) }}"
+
+- name: activate nginx module
+  file: 
+    src: "{{ item.dest }}"
+    dest: "/etc/nginx/modules-enabled/{{ item.item }}.conf"
+    owner: root
+    group: root
+    state: link
+  loop: "{{ modules_created.results|flatten(levels=1) }}"
+  when: item.changed
+
+- name: reload nginx
+  service:
+    name: nginx
+    state: reloaded
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
