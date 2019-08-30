@@ -11,7 +11,9 @@
     - mariadb
     - redis
     - php-fpm
-    - apache-no-varnish
+    - openssl
+    - nginx
+#    - apache-no-varnish
 #    - wordpress
 #    - apache
 #    - iptables

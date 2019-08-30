@@ -1,0 +1,18 @@
+---
+
+- name: Generate an OpenSSL private key
+  openssl_privatekey:
+    path: "/etc/ssl/private/{{ app }}.key"
+
+- name: Generate an OpenSSL CSR.
+  openssl_csr:
+    path: "/etc/ssl/certs/{{ app }}.csr"
+    privatekey_path: "/etc/ssl/private/{{ app }}.key"
+    common_name: "{{ app }}.example.com"
+
+- name: Generate self-signed SSL certificate
+  openssl_certificate:
+    path: "/etc/ssl/certs/{{ app }}.crt"
+    privatekey_path: "/etc/ssl/private/{{ app }}.key"
+    provider: selfsigned
+    csr_path: "/etc/ssl/certs/{{ app }}.csr"
