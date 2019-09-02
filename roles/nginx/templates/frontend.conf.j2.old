@@ -1,0 +1,66 @@
+server {
+        listen [::]:80 default_server;
+        listen 80 default_server;
+
+        access_log /var/log/nginx/{{app}}.example.com.access.log;
+        error_log /var/log/nginx/{{app}}.example.com.error.log;
+        root /var/www/vhosts/{{app}};
+        
+location / {
+        index index.html index.htm index.php;
+        try_files $uri =404;
+        }
+
+location ~ \.php$ {
+    include /etc/nginx/fastcgi_params;
+    fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME /var/www/vhosts/{{app}}$fastcgi_script_name;
+    }
+} 
+
+server {
+
+        listen [::]:443 default_server;
+        listen 443 default_server;
+        ssl                 on;
+        ssl_certificate     /etc/ssl/certs/{{ app }}.crt;
+        ssl_certificate_key /etc/ssl/private/{{ app }}.key;
+        ssl_ciphers         EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH;
+        ssl_protocols       TLSv1.2;
+
+
+        access_log /var/log/nginx/{{app}}.example.com.access.log;
+        error_log /var/log/nginx/{{app}}.example.com.error.log;
+        root /var/www/vhosts/{{app}};
+
+        
+
+location / {
+        index index.html index.htm index.php;
+        try_files $uri =404;
+        }
+
+location ~ \.php$ {
+    include /etc/nginx/fastcgi_params;
+    fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME /var/www/vhosts/{{app}}$fastcgi_script_name;
+    }
+
+# WordPress single site rules.
+# Designed to be included in any server {} block.
+
+# This order might seem weird - this is attempted to match last if rules below fail.
+# http://wiki.nginx.org/HttpCoreModule
+
+   # Add trailing slash to */wp-admin requests.
+  rewrite /wp-admin$ $scheme://$host$uri/ permanent;
+
+   # Directives to send expires headers and turn off 404 error logging.
+  location ~* ^.+\.(ogg|ogv|svg|svgz|eot|otf|woff|mp4|ttf|rss|atom|jpg|jpeg|gif|png|ico|zip|tgz|gz|rar|bz2|doc|xls|exe|ppt|tar|mid|midi|wav|bmp|rtf)$ {
+    access_log off; log_not_found off; expires max;
+  }
+
+
+} 

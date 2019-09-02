@@ -12,8 +12,8 @@
     - redis
     - php-fpm
     - openssl
-    - nginx
-#    - apache-no-varnish
+      #- nginx
+    - apache-no-varnish
     - wordpress
 #    - apache
 #    - iptables

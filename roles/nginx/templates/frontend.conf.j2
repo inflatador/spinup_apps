@@ -1,50 +1,36 @@
+# server {
+# 	listen 80 default_server;
+# 
+# 	return 301 https://www.wordpress.example.com$request_uri;
+# 
+# }
+
+
 server {
-        listen [::]:80 default_server;
-        listen 80 default_server;
-        server_name {{app}}.example.com www.{{app}}.example.com;
+
+        listen 443 default_server;
+
+        server_name www.wordpress.example.com;
+        root /var/www/vhosts/{{app}};
+
+        index index.html index.htm index.php;
+        client_max_body_size 8M;
         access_log /var/log/nginx/{{app}}.example.com.access.log;
         error_log /var/log/nginx/{{app}}.example.com.error.log;
-        root /var/www/vhosts/{{app}};
-        
-location / {
-        index index.html index.htm index.php;
-        try_files $uri =404;
-        }
 
-location ~ \.php$ {
-    include /etc/nginx/fastcgi_params;
-    fastcgi_pass unix:/run/php/php7.2-fpm.sock;
-    fastcgi_index index.php;
-    fastcgi_param SCRIPT_FILENAME /var/www/vhosts/{{app}}$fastcgi_script_name;
-    }
-} 
+        location ~ \.php$ {
+        	include snippets/fastcgi-php.conf;
+        	fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+    	}
 
-server {
 
-        listen [::]:443 default_server;
-        listen 443 default_server;
-        ssl                 on;
+	ssl on;
         ssl_certificate     /etc/ssl/certs/{{ app }}.crt;
         ssl_certificate_key /etc/ssl/private/{{ app }}.key;
-        ssl_ciphers         EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH;
-        ssl_protocols       TLSv1.2;
+        # Use PCI compliant SSL protocols and ciphers
+        ssl_protocols  TLSv1.1 TLSv1.2;
+        ssl_ciphers  HIGH:!kEDH:!ADH:!EXPORT56;
+        ssl_prefer_server_ciphers   on;
 
-        server_name {{app}}.example.com www.{{app}}.example.com;
-        access_log /var/log/nginx/{{app}}.example.com.access.log;
-        error_log /var/log/nginx/{{app}}.example.com.error.log;
-        root /var/www/vhosts/{{app}};
 
-        
-
-location / {
-        index index.html index.htm index.php;
-        try_files $uri =404;
-        }
-
-location ~ \.php$ {
-    include /etc/nginx/fastcgi_params;
-    fastcgi_pass unix:/run/php/php7.2-fpm.sock;
-    fastcgi_index index.php;
-    fastcgi_param SCRIPT_FILENAME /var/www/vhosts/{{app}}$fastcgi_script_name;
-    }
-} 
+}

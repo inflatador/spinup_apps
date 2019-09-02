@@ -73,7 +73,7 @@
     owner: "{{ app }}"
     group: "{{ web_group }}"
     path: "{{ app_path }}"
-    mode: 'u=rwX,g=rwX,o=""'
+    mode: 'u=rwX,g=rwX,o=---'
     
   
   
