@@ -1,4 +1,4 @@
-# Wordpress Ansible Playbook
+# SpinUp Ansible Playbooks
 
 Initial goals:
 - Single server

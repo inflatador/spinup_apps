@@ -11,3 +11,4 @@
     - redis
     - php-fpm
     - openssl
+    - apache-no-varnish
