@@ -1,0 +1,32 @@
+---
+
+- name: Ensure drupal dependencies are installed
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - composer
+
+- name: Ensure drush is installed
+  composer:
+    command: require
+    global_command: yes
+    arguments: drush/drush
+    
+#    arguments: drupal-composer/drupal-project:8.x-dev
+#  Problem 1
+#    - drupal/core 8.8.x-dev requires ext-gd * -> the requested PHP extension gd is missing from your system.
+#    - drupal/core 8.7.x-dev requires ext-gd * -> the requested PHP extension gd is missing from your system.
+#    - drupal/core 8.7.6 requires ext-gd * -> the requested PHP extension gd is missing from your system.
+#    - drupal/core 8.7.5 requires ext-gd * -> the requested PHP extension gd is missing from your system.
+#    - drupal/core 8.7.4 requires ext-gd * -> the requested PHP extension gd is missing from your system.
+#    - drupal/core 8.7.3 requires ext-gd * -> the requested PHP extension gd is missing from your system.
+#    - drupal/core 8.7.2 requires ext-gd * -> the requested PHP extension gd is missing from your system.
+#    - drupal/core 8.7.1 requires ext-gd * -> the requested PHP extension gd is missing from your system.
+#    - drupal/core 8.7.0-rc1 requires ext-gd * -> the requested PHP extension gd is missing from your system.
+#    - drupal/core 8.7.0-beta2 requires ext-gd * -> the requested PHP extension gd is missing from your system.
+#    - drupal/core 8.7.0-beta1 requires ext-gd * -> the requested PHP extension gd is missing from your system.
+#    - drupal/core 8.7.0-alpha2 requires ext-gd * -> the requested PHP extension gd is missing from your system.
+#    - drupal/core 8.7.0-alpha1 requires ext-gd * -> the requested PHP extension gd is missing from your system.
+#    - drupal/core 8.7.0 requires ext-gd * -> the requested PHP extension gd is missing from your system.
+#    - Installation request for drupal/core ^8.7.0 -> satisfiable by drupal/core[8.7.0, 8.7.0-alpha1, 8.7.0-alpha2, 8.7.0-beta1, 8.7.0-beta2, 8.7.0-rc1, 8.7.1, 8.7.2, 8.7.3, 8.7.4, 8.7.5, 8.7.6, 8.7.x-dev, 8.8.x-dev].

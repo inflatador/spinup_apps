@@ -1,0 +1,13 @@
+---
+
+- name: Run lamp tasks
+  hosts: all
+  become: yes
+  vars_files:
+    - defaults.yml
+
+  roles:
+    - mariadb
+    - redis
+    - php-fpm
+    - openssl
