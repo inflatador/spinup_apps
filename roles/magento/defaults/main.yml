@@ -22,7 +22,7 @@ magento_install_cmd: >
   --backend-frontname="{{ magento_admin_url }}" 
   --db-host=localhost 
   --db-name="{{ app }}" 
-  --db-user="{{ app }} "
+  --db-user="{{ app }}"
   --db-password="{{ app_db_password }}" 
   --admin-firstname=admin 
   --admin-lastname=admin 

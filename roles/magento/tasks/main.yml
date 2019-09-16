@@ -90,8 +90,8 @@
   file:
     state: directory
     recurse: yes
-    owner: "{{ magento_os_user }}"
-    group: "{{ magento_os_group }}"
+    owner: "{{ app }}"
+    group: "{{ web_group }}"
     path: '/var/www/vhosts/magento'
     mode: 'u=rwX,g=rwX,o=rX'
 

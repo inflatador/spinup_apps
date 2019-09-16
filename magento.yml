@@ -14,5 +14,6 @@
    - defaults.yml
   roles:
     - common 
+    - varnish
     - magento
     - iptables

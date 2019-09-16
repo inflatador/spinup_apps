@@ -1,0 +1,60 @@
+---
+
+- name: Ensure that varnish is installed
+  package:
+    name: varnish
+    state: present
+
+- name: Ensure varnish is enabled and starts on boot
+  systemd:
+    name: varnish
+    state: started
+    enabled: yes
+
+#- name: Write Varnish environment configuration
+#  template:
+#    src: params.j2
+#    dest: /etc/varnish/varnish.params
+#    owner: root
+#    group: root
+#    mode: 0644
+#  notify: Restart Varnish
+
+
+- name: Ensure apache varnish config is available
+  include_vars: ../../apache/defaults.yml
+  template:
+    src: "{{ item }}.conf.j2"
+    dest: "/etc/apache2/sites-available/{{ item }}.conf"
+    mode:  0644
+    owner: root
+    group: root
+    backup: true
+  register: sites_created
+  loop:
+    - apache-frontend
+    - apache-backend
+  notify: restart apache
+
+- name: Ensure apache config is active
+  file: 
+    src: "{{ item.dest }}"
+    dest: "/etc/apache2/sites-enabled/{{ item.item }}.conf"
+    owner: root
+    group: root
+    state: link
+  with_items: "{{ sites_created.results }}"
+  notify: restart apache
+  
+- name: Ensure non-varnish apache config is disabled
+  file: 
+    src: "{{ item.dest }}"
+    dest: "/etc/apache2/sites-enabled/{{ item }}.conf"
+    owner: root
+    group: root
+    state: absent
+  loop:
+    - frontend
+    - backend
+  notify: restart apache
+  
