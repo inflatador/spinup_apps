@@ -86,4 +86,13 @@
   notify: restart ssh daemon
 
 
+- name: switch to noop IO scheduler
+  template: 
+    src: 88-ioscheduler.rules.j2
+    dest: /etc/udev/rules.d/88-ioscheduler.rules
+    mode: 0644
+    owner: root
+    group: root
+  notify: trigger udev
+
     

@@ -2,7 +2,7 @@
 
 Initial goals:
 - Single server
-- Runs on Ubuntu 18 LTS
+- Runs on CentOS 7
 - Follows best practices as much as possible
 - Tests to confirm operation
 
