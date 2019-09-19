@@ -1,8 +1,8 @@
 ---
 
-#- import_playbook: lamp.yml
-#  vars: 
-#    app: wordpress
+- import_playbook: lamp.yml
+  vars: 
+    app: wordpress
 
 
 - name: Ensure LAMP is installed

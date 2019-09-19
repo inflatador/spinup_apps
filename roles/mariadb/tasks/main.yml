@@ -6,40 +6,56 @@
   when: ansible_os_family == 'RedHat'
 
 
-#- name: Ensure mariadb packages are installed
-#  package:
-#    name: "{{ item }}"
-#    state: present
-#  loop:
-#    - mariadb-server
-#    - python-mysqldb
-#
-#- name: Ensure MariaDB is enabled and starts on boot
-#  systemd:
-#    name: mariadb
-#    state: started
-#    enabled: yes
-#    
-## Note: we don't change root's password because Ubuntu uses 
-## socket-based auth for the root MySQL password user.
-## in other words, the system root user can login to MySQL without a password
-## but other system users cannot login as MySQL root user.
-#
-#- name: Remove anonymous users a la mysql_secure_installation
-#  mysql_user:
-#   name: ''
-#   host_all: yes
-#   state: absent
-#
-#- name: Remove test db
-#  mysql_db:
-#      name: test
-#      state: absent
-#
-#- name: Create app database
-#  mysql_db:
-#      name: "{{ app }}"
-#      state: present
+- name: Ensure mariadb packages are installed
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "mariadb{{ mariadb_vers }}-server"
+    - MySQL-python
+
+- name: Ensure MariaDB is enabled and starts on boot
+  systemd:
+    name: mariadb
+    state: started
+    enabled: yes
+   
+
+- name: Assign random password for MySQL root user
+  set_fact:
+    mysql_root_pw: "{{ lookup('password', '~/mysql_root_pw chars=ascii_letters,digits length=36')}}"
+
+- name: Set root password
+  block:
+    - mysql_user:
+        name: root
+        host: localhost
+        password: "{{ mysql_root_pw }}"
+        state: present
+  rescue:
+    - template: 
+        src: my.cnf.j2 
+        dest: /root/.my.cnf 
+        owner: root
+        group: root 
+        mode: 0600
+
+
+- name: Remove anonymous users a la mysql_secure_installation
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+
+- name: Remove test db
+  mysql_db:
+    name: test
+    state: absent
+
+- name: Create app database
+  mysql_db:
+    name: "{{ app }}"
+    state: present
 #
 #- name: Assign random password for app database user
 #  set_fact:
