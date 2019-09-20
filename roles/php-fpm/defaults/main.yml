@@ -1,6 +1,6 @@
 ---
 
-php_vers: 7.2
+php_vers: 72u
 
 phpfpm_reserved_mem: "{{ (ansible_memtotal_mb*0.40)|int|abs }}"
 
@@ -9,11 +9,11 @@ phpfpm_max_children: "{{ (ansible_memtotal_mb*0.40/50)|round(0,'floor')|int|abs 
 
 phpfpm_pools:
   - name: "default"
-    process_user: "www-data"
-    process_group: "www-data"
+    process_user: "apache"
+    process_group: "apache"
     listen: "/var/run/php-fpm/$pool.socket"
     listen_owner: "root"
-    listen_group: "www-data"
+    listen_group: "apache"
     listen_mode: "0660"
     log_folder: "/var/log/php-fpm/"
     access_log: "$pool-access.log"

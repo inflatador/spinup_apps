@@ -1,19 +1,26 @@
 ---
 
+- name: install IUS release package
+  yum:
+    name: "https://repo.ius.io/ius-release-el{{ ansible_distribution_major_version }}.rpm"
+    state: present
+  when: ansible_os_family == 'RedHat'
+
 - name: Ensure Redis Server is installed
   package:
-    name: redis-server
+    name: redis5
     state: latest
 
-- name: Enable Redis
-  service:
+- name: Ensure Redis is started and starts on boot
+  systemd:
     name: redis
+    state: started
     enabled: yes
-
+    
 - name: Write Redis configuration
   template:
     src: redis.conf.j2
-    dest: /etc/redis/redis.conf
+    dest: /etc/redis.conf
     owner: redis
     group: root
     mode: 0644
