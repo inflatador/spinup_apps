@@ -4,3 +4,6 @@
   service:
     name: sshd
     state: restarted
+
+- name: trigger udev
+  shell: 'udevadm trigger'

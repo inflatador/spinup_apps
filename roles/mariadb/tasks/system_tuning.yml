@@ -2,8 +2,8 @@
 
 - name: Ensure optimized mariadb config is active
   template:
-    src: 50-server.cnf.j2
-    dest: /etc/mysql/mariadb.conf.d/50-server.cnf
+    src: mariadb-server.cnf.j2
+    dest: "{{ mariadb_config_path }}"
     owner: root
     group: root
     mode: 0644

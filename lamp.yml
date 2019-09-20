@@ -8,7 +8,7 @@
 
   roles:
     - mariadb
-    - redis
-    - php-fpm
-    - openssl
-    - apache-no-varnish
+#    - redis
+#    - php-fpm
+#    - openssl
+#    - apache-no-varnish

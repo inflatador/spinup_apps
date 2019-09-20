@@ -1,4 +1,6 @@
 ---
 
+mariadb_vers: "102"
+mariadb_config_path: "/etc/my.cnf.d/mariadb-server.cnf"
 innodb_buffer_pool_size: "{{ (ansible_memtotal_mb*0.25)|int|abs }}"
 mysql_system_tuning: True
