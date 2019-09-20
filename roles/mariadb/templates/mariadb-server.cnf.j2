@@ -19,7 +19,7 @@ thread_cache_size       = 8
 myisam_recover_options  = BACKUP
 query_cache_limit	= 1M
 query_cache_size        = 16M
-log_error = /var/log/mysql/error.log
+log_error = /var/log/mariadb/error.log
 expire_logs_days	= 10
 max_binlog_size   = 100M
 character-set-server  = utf8mb4
@@ -30,13 +30,13 @@ collation-server      = utf8mb4_general_ci
 # Read the manual for more InnoDB related options. There are many!
 innodb-buffer-pool-size             = {{ innodb_buffer_pool_size }}M
 #innodb-data-file-path              = ibdata1:10M:autoextend
-innodb-log-file-size                = 64M
-innodb-log-buffer-size              = 64M
-innodb-file-per-table               = 1
-innodb-open-files                   = 512
-innodb-buffer-pool-dump-at-shutdown = 1
-innodb-buffer-pool-load-at-startup  = 1
-innodb_flush_method = O_DIRECT
+# innodb-log-file-size                = 64M
+# innodb-log-buffer-size              = 64M
+# innodb-file-per-table               = 1
+# innodb-open-files                   = 512
+# innodb-buffer-pool-dump-at-shutdown = 1
+# innodb-buffer-pool-load-at-startup  = 1
+# innodb_flush_method = O_DIRECT
 
 [embedded]
 [mariadb]

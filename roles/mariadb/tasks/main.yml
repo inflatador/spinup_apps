@@ -14,6 +14,15 @@
     - "mariadb{{ mariadb_vers }}-server"
     - MySQL-python
 
+- name: Ensure optimized mariadb config is active
+  template:
+    src: mariadb-server.cnf.j2
+    dest: "{{ mariadb_config_path }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart mariadb
+
 - name: Ensure MariaDB is enabled and starts on boot
   systemd:
     name: mariadb
@@ -24,20 +33,26 @@
   set_fact:
     mysql_root_pw: "{{ lookup('password', '~/mysql_root_pw chars=ascii_letters,digits length=36')}}"
 
+
+- name: Check if MySQL root password has been set
+  stat: path=/root/.my.cnf
+  register: mycnf_exists
+
 - name: Set root password
-  block:
-    - mysql_user:
-        name: root
-        host: localhost
-        password: "{{ mysql_root_pw }}"
-        state: present
-  rescue:
-    - template: 
-        src: my.cnf.j2 
-        dest: /root/.my.cnf 
-        owner: root
-        group: root 
-        mode: 0600
+  mysql_user:
+    name: root
+    host: localhost
+    password: "{{ mysql_root_pw }}"
+    state: present
+  when: mycnf_exists.stat.exists == False
+  
+- name: Ensure root my.cnf client file is in place
+  template: 
+    src: my.cnf.j2 
+    dest: /root/.my.cnf 
+    owner: root
+    group: root 
+    mode: 0600
 
 
 - name: Remove anonymous users a la mysql_secure_installation
@@ -69,7 +84,3 @@
     priv: "{{ app }}.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,INDEX,ALTER,CREATE TEMPORARY TABLES,LOCK TABLES,EXECUTE,CREATE VIEW,SHOW VIEW,CREATE ROUTINE,ALTER ROUTINE,TRIGGER"
     host: localhost
     update_password: on_create
-
-- name: Tune system for MariaDB
-  include: system_tuning.yml
-  when: mysql_system_tuning
