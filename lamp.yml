@@ -9,6 +9,6 @@
   roles:
     - mariadb
     - redis
-#    - php-fpm
+    - php-fpm
 #    - openssl
 #    - apache-no-varnish

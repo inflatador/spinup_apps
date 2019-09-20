@@ -20,20 +20,27 @@
 #    var: phpfpm_max_children
 
 
-#- name: Ensure pool config is in place
-#  template:
-#    src: www.conf.j2
-#    dest: /etc/php/{{php_vers}}/fpm/pool.d/www.conf
-#    owner: root
-#    group: root
-#    mode: 0644
-#    backup: yes
-#
-#- name: Ensure PHP-FPM service is restarted to enable new config
-#  systemd:
-#    name: php{{php_vers}}-fpm
-#    state: restarted
-#    enabled: yes
+- name: Add php-fpm user to app group
+  user:
+   name: php-fpm
+   groups: "{{ app | default(omit, true) }}"
+   shell: /usr/sbin/nologin
+   
+
+- name: Ensure pool config is in place
+  template:
+    src: www.conf.j2
+    dest: "{{phpfpm_path}}/www.conf"
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+
+- name: Ensure PHP-FPM service is restarted to enable new config
+  systemd:
+    name: php-fpm
+    state: restarted
+    enabled: yes
 #    
 #- name: Configure OpCache
 #  include: configure_opcache.yml

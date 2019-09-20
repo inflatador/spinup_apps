@@ -2,7 +2,7 @@
 
 - name: Ensure app group exists
   group:
-    name: "{{ web_group }}"
+    name: "{{ app }}"
     state: present
 
 - name: Ensure app user exists
@@ -57,7 +57,7 @@
   user:
     name: sftp
     password: "{{ lookup('password', '~/sftp_pass chars=ascii_letters,digits,hexdigits,punctuation')  | password_hash('sha512')}}"
-    groups: "{{ web_group | default(omit, true) }}"
+#    groups: "{{ web_group | default(omit, true) }}"
     shell: /usr/sbin/nologin
     update_password: on_create
     home: "{{ app_path }}"

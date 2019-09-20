@@ -4,7 +4,7 @@
 
 # Begin Linux system user vars
 
-web_group: "www-data"
+web_group: "{{ app }}"
 
 # Begin database vars
 

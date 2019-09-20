@@ -7,6 +7,8 @@ phpfpm_reserved_mem: "{{ (ansible_memtotal_mb*0.40)|int|abs }}"
 #this figure assumes that each PHP process averages 50Mb of RAM.
 phpfpm_max_children: "{{ (ansible_memtotal_mb*0.40/50)|round(0,'floor')|int|abs }}"
 
+phpfpm_path: "/etc/php-fpm.d"
+
 phpfpm_pools:
   - name: "default"
     process_user: "apache"
