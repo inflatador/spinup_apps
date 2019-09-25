@@ -7,8 +7,9 @@
     - defaults.yml
 
   roles:
+    - common 
     - mariadb
     - redis
     - php-fpm
-#    - openssl
+    - openssl
 #    - apache-no-varnish
