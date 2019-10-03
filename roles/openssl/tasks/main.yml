@@ -16,3 +16,4 @@
     privatekey_path: "{{ ssl_path }}/private/{{ app }}.key"
     provider: selfsigned
     csr_path: "{{ ssl_path }}/certs/{{ app }}.csr"
+    

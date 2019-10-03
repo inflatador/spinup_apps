@@ -1,0 +1,19 @@
+---
+
+- name: Ensure Apache HTTPD is installed
+  package:
+    name: "{{ item }}"
+  loop:
+    - "{{ apache_vers}}"
+    - "{{ apache_vers}}-mod_ssl"
+    - "{{ php_vers }}-fpm-httpd"
+    
+- name: Enable event MPM
+  template:
+    src: 00-mpm.conf.j2
+    dest: /etc/httpd/conf.modules.d/00-mpm.conf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+    

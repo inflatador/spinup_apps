@@ -4,7 +4,6 @@
   vars: 
     app: wordpress
 
-
 - name: Ensure LAMP is installed
   hosts: all
   become: yes

@@ -1,0 +1,4 @@
+---
+
+apache_vers: "httpd24u"
+php_vers: "php72u"
